@@ -1,4 +1,6 @@
 ﻿
+using Application.Data.DataBaseContext;
+
 namespace Infrastructure
 {
     public static class DependencyInjection
@@ -10,6 +12,7 @@ namespace Infrastructure
             {
                 options.UseSqlite(connectionString);
             });
+            services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             return services;
         }
     }
