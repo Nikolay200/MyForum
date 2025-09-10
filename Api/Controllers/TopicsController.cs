@@ -2,7 +2,6 @@ using Application.DTO;
 using Application.Topics;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json.Serialization;
 
 namespace API.Controllers
 {
@@ -22,15 +21,15 @@ namespace API.Controllers
             return Ok(await topicsService.CreateTopicAsync(topicRequestDto, token));
         }
 
-        [HttpDelete]
+        [HttpDelete("{topicId}")]
         public async Task<ActionResult<bool>> DeleteTopic(Guid topicId, CancellationToken token)
         {
             await topicsService.DeleteTopicAsync(topicId, token);
-            return Ok();
+            return Ok("True");
         }
 
-        [HttpPut]
-        public async Task<ActionResult<TopicResponseDto>> UpdateTopic(Guid topicId, UpdateTopicRequestDto topicRequestDto, CancellationToken token)
+        [HttpPut("{topicId}")]
+        public async Task<ActionResult<TopicResponseDto>> UpdateTopic(Guid topicId, [FromBody] UpdateTopicRequestDto topicRequestDto, CancellationToken token)
         {
             return Ok(await topicsService.UpdateTopicAsync(topicId, topicRequestDto, token));
         }

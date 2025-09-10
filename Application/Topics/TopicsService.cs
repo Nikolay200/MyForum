@@ -26,25 +26,19 @@ namespace Application.Topics
             return newTopic.ToTopicResponseDto();
         }
 
-        public async Task DeleteTopicAsync(Guid topicId, CancellationToken token)
+        public async Task DeleteTopicAsync(Guid currentTopicId, CancellationToken token)
         {
-            //try
-            //{
-            //    for (int i = 1; i <= 10; i++)
-            //    {
-            //        token.ThrowIfCancellationRequested();
-            //        await Task.Delay(200, token);
-            //        logger.LogInformation($"{i} сек.");
-            //    }
-            //    var topics = await GetAllTopicsAsync(token);
-            //    var currentTopic = topics.FirstOrDefault();
-            //    return currentTopic;
-            //}
-            //catch (Exception)
-            //{
-            //    return null;
-            //}
-            throw new NotImplementedException();
+            await StartTiming(10, 200, logger, token);
+            TopicId topicId = TopicId.Of(currentTopicId);
+
+            var topic = await dbContext.Topics.FindAsync([topicId]);
+
+            if (topic == null)
+            {
+                throw new TopicNotFoundException(currentTopicId);
+            }
+            dbContext.Topics.Remove(topic);
+            await dbContext.SaveChangesAsync(token);
         }
 
         public async Task<Topic> GetTopicAsync(Guid topicId, CancellationToken token)
@@ -87,9 +81,29 @@ namespace Application.Topics
             }
         }
 
-        public Task<Topic> UpdateTopicAsync(Guid topicId, UpdateTopicRequestDto topicRequestDto, CancellationToken token)
+        public async Task<TopicResponseDto> UpdateTopicAsync(Guid currentTopicId, UpdateTopicRequestDto topicRequestDto, CancellationToken token)
         {
-            throw new NotImplementedException();
+            await StartTiming(10, 200, logger, token);
+            TopicId topicId = TopicId.Of(currentTopicId);
+
+            var topic = await dbContext.Topics.FindAsync([topicId]);
+
+            if(topic == null)
+            {
+                throw new TopicNotFoundException(currentTopicId);
+            }
+
+            topic.Title = topicRequestDto.Title ?? topic.Title;
+            topic.Summary = topicRequestDto.Summary ?? topic.Summary;
+            topic.TopicType = topicRequestDto.TopicType ?? topic.TopicType;
+            topic.EventStart = topicRequestDto.EventStart;            
+            topic.Location = Location.Of(
+                topicRequestDto.Location.City, 
+                topicRequestDto.Location.City
+                );
+
+            await dbContext.SaveChangesAsync(token);
+            return topic.ToTopicResponseDto();
         }
     }
 }
