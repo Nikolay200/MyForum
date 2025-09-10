@@ -39,8 +39,7 @@ namespace Application.Topics
 
         public async Task<Topic> GetTopicAsync(Guid topicId, CancellationToken token)
         {
-            try
-            {
+
                 for (int i = 1; i <= 10; i++)
                 {
                     token.ThrowIfCancellationRequested();
@@ -56,11 +55,7 @@ namespace Application.Topics
                 }
 
                 return topic;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+
         }
 
         public async Task<List<TopicResponseDto>> GetAllTopicsAsync(CancellationToken token)

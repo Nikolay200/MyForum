@@ -33,8 +33,8 @@ namespace API.Controllers
         {
             return Ok(await topicsService.UpdateTopicAsync(topicId, topicRequestDto, token));
         }
-        [HttpGet("{topicId}")]
 
+        [HttpGet("{topicId}")]
         public async Task<ActionResult<Topic>> GetTopic(Guid topicId, CancellationToken token)
         {
             return Ok(await topicsService.GetTopicAsync(topicId, token));

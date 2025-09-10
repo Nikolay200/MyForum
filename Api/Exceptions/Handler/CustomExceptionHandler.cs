@@ -5,7 +5,7 @@ namespace Api.Exceptions.Handler
 {
     public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IExceptionHandler
     {
-        public ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
+        public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
         {
             logger.LogWarning("Обработанное исключение: {Message}, время: {time}", exception.Message, DateTime.Now);
 
@@ -28,9 +28,11 @@ namespace Api.Exceptions.Handler
                 Title = details.Title,
                 Detail = details.Detail,
                 Status = details.StatusCode,
-                Instance = httpContext.
+                Instance = httpContext.Request.Path
             };
-
+            problemDetails.Extensions.Add("traceId", httpContext.TraceIdentifier);
+            await httpContext.Response.WriteAsJsonAsync( problemDetails, cancellationToken );
+            return true;
         }
     }
 }
