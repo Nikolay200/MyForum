@@ -11,9 +11,19 @@ namespace Application.Topics
     public class TopicsService(IApplicationDbContext dbContext, ILogger<TopicsService> logger) : ITopicsService
     {
 
-        public Task<Topic> CreateTopicAsync(CreateTopicRequestDto topicRequestDto, CancellationToken token)
+        public async Task<TopicResponseDto> CreateTopicAsync(CreateTopicRequestDto topicRequestDto, CancellationToken token)
         {
-            throw new NotImplementedException();
+            Topic newTopic = Topic.Create(
+                TopicId.Of(Guid.NewGuid()), 
+                    topicRequestDto.Title,  
+                    topicRequestDto.EventStart, 
+                    topicRequestDto.TopicType, 
+                    topicRequestDto.Summary, 
+                    Location.Of(topicRequestDto.Location.City, topicRequestDto.Location.Street)
+                );
+            dbContext.Topics.Add(newTopic);
+            await dbContext.SaveChangesAsync(token);
+            return newTopic.ToTopicResponseDto();
         }
 
         public async Task DeleteTopicAsync(Guid topicId, CancellationToken token)
@@ -39,35 +49,35 @@ namespace Application.Topics
 
         public async Task<Topic> GetTopicAsync(Guid topicId, CancellationToken token)
         {
+            await StartTiming(10, 200, logger, token);
 
-                for (int i = 1; i <= 10; i++)
-                {
-                    token.ThrowIfCancellationRequested();
-                    await Task.Delay(200, token);
-                    logger.LogInformation($"{i} сек.");
-                }     
-                TopicId id = TopicId.Of(topicId); 
-                var topic = await dbContext.Topics.FindAsync([id]);
+            TopicId id = TopicId.Of(topicId);
+            var topic = await dbContext.Topics.FindAsync([id]);
 
-                if(topic is null)
-                {
-                    throw new TopicNotFoundException(topicId);
-                }
+            if (topic is null)
+            {
+                throw new TopicNotFoundException(topicId);
+            }
 
-                return topic;
+            return topic;
+        }
 
+        private static async Task StartTiming(int counter, int delay, ILogger<TopicsService> logger, CancellationToken token)
+        {
+            for (int i = 1; i <= counter; i++)
+            {
+                token.ThrowIfCancellationRequested();
+                await Task.Delay(delay, token);
+                logger.LogInformation($"{i} сек.");
+            }
         }
 
         public async Task<List<TopicResponseDto>> GetAllTopicsAsync(CancellationToken token)
         {
             try
             {
-                for (int i = 1; i <= 10; i++)
-                {
-                    token.ThrowIfCancellationRequested();
-                    await Task.Delay(200, token);
-                    logger.LogInformation($"{i} сек.");
-                }
+                await StartTiming(10, 200, logger, token);
+
                 var topics = await dbContext.Topics.AsNoTracking().ToListAsync(token);
                 return topics.ToTopicResponseDtoList();
             }
