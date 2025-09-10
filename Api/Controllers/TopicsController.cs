@@ -1,6 +1,3 @@
-using Application.DTO;
-using Application.Topics;
-using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

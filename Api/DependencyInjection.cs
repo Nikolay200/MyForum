@@ -1,5 +1,4 @@
-﻿
-using Api.Exceptions.Handler;
+﻿using Api.Exceptions.Handler;
 
 namespace Api
 {
@@ -11,6 +10,16 @@ namespace Api
             services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             services.AddOpenApi();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("react-policy", policy =>
+                {
+                    policy.AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .WithOrigins("http://localhost:3000");
+                });
+            });
             return services;
         }
 
@@ -21,6 +30,7 @@ namespace Api
             {
                 application.MapOpenApi();
             }
+            application.UseCors("react-policy");
             application.UseExceptionHandler(options => { });
             application.UseHttpsRedirection();
 
