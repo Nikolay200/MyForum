@@ -1,3 +1,4 @@
+using Application.Topics.Queries.GetTopic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -11,6 +12,12 @@ namespace API.Controllers
         public async Task<IResult> GetAllTopics(CancellationToken token)
         {
             return Results.Ok(await mediator.Send(new GetTopicsQuery(token)));
+        }
+
+        [HttpGet("{topicId}")]
+        public async Task<IResult> GetTopic(Guid topicId, CancellationToken token)
+        {
+            return Results.Ok(await mediator.Send(new GetTopicQuery(topicId, token)));
         }
 
         [HttpPost]
@@ -27,12 +34,6 @@ namespace API.Controllers
 
         [HttpPut("{topicId}")]
         public async Task<ActionResult<TopicResponseDto>> UpdateTopic(Guid topicId, [FromBody] UpdateTopicRequestDto topicRequestDto, CancellationToken token)
-        {
-            return Ok(null);
-        }
-
-        [HttpGet("{topicId}")]
-        public async Task<ActionResult<Topic>> GetTopic(Guid topicId, CancellationToken token)
         {
             return Ok(null);
         }
