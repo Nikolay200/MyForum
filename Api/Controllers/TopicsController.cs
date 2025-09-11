@@ -8,9 +8,9 @@ namespace API.Controllers
         : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<List<Topic>>> GetAllTopics(CancellationToken token)
+        public async Task<IResult> GetAllTopics(CancellationToken token)
         {
-            return Ok(await mediator.Send(new GetTopicsQuery(token)));
+            return Results.Ok(await mediator.Send(new GetTopicsQuery(token)));
         }
 
         [HttpPost]
