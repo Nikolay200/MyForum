@@ -1,4 +1,3 @@
-using Application.Topics.Queries.GetTopic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -21,21 +20,22 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateTopic(CreateTopicRequestDto topicRequestDto, CancellationToken token)
+        public async Task<IResult> CreateTopic(CreateTopicRequestDto topicRequestDto, CancellationToken token)
         {
-            return Ok(null);
+            var response = await mediator.Send(new CreateTopicCommand(topicRequestDto));
+            return Results.Created($"/topics/{response.Response.Id}", response.Response);
         }
 
         [HttpDelete("{topicId}")]
-        public async Task<ActionResult<bool>> DeleteTopic(Guid topicId, CancellationToken token)
-        {            
-            return Ok("True");
+        public async Task<IResult> DeleteTopic(Guid topicId, CancellationToken token)
+        {
+            return Results.Ok(await mediator.Send(new DeleteTopicCommand(topicId, token)));
         }
 
         [HttpPut("{topicId}")]
-        public async Task<ActionResult<TopicResponseDto>> UpdateTopic(Guid topicId, [FromBody] UpdateTopicRequestDto topicRequestDto, CancellationToken token)
+        public async Task<IResult> UpdateTopic(Guid topicId, [FromBody] UpdateTopicRequestDto topicRequestDto, CancellationToken token)
         {
-            return Ok(null);
+            return Results.Ok(await mediator.Send(new UpdateTopicCommand(topicId, topicRequestDto, token)));
         }
     }
 }

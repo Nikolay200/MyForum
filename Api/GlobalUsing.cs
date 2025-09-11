@@ -7,3 +7,8 @@ global using Application.Topics.Queries.GetTopics;
 global using MediatR;
 global using Domain.Models;
 global using Application.Exceptions;
+
+global using Application.Topics.Commands.CreateTopic;
+global using Application.Topics.Commands.DeleteTopic;
+global using Application.Topics.Commands.UpdateTopic;
+global using Application.Topics.Queries.GetTopic;
