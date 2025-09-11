@@ -1,8 +1,7 @@
 ﻿
-using Application.DTO;
-
-namespace Application.Topics
+namespace Application.Topics.Old
 {
+    [Obsolete("Устарело", true)]
     public interface ITopicsService
     {
         Task<List<TopicResponseDto>> GetAllTopicsAsync(CancellationToken token);

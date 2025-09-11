@@ -1,18 +1,19 @@
 ﻿using Application.Data.DataBaseContext;
 
-namespace Application.Topics
+namespace Application.Topics.Old
 {
+    [Obsolete("Устарело", true)]
     public class TopicsService(IApplicationDbContext dbContext, ILogger<TopicsService> logger) : ITopicsService
     {
 
         public async Task<TopicResponseDto> CreateTopicAsync(CreateTopicRequestDto topicRequestDto, CancellationToken token)
         {
             Topic newTopic = Topic.Create(
-                TopicId.Of(Guid.NewGuid()), 
-                    topicRequestDto.Title,  
-                    topicRequestDto.EventStart, 
-                    topicRequestDto.TopicType, 
-                    topicRequestDto.Summary, 
+                TopicId.Of(Guid.NewGuid()),
+                    topicRequestDto.Title,
+                    topicRequestDto.EventStart,
+                    topicRequestDto.TopicType,
+                    topicRequestDto.Summary,
                     Location.Of(topicRequestDto.Location.City, topicRequestDto.Location.Street)
                 );
             dbContext.Topics.Add(newTopic);
@@ -31,7 +32,7 @@ namespace Application.Topics
             {
                 throw new TopicNotFoundException(currentTopicId);
             }
-            topic.IsDeleted = true; 
+            topic.IsDeleted = true;
             topic.DeletedAt = DateTimeOffset.UtcNow;
             //dbContext.Topics.Remove(topic);
             await dbContext.SaveChangesAsync(token);
@@ -70,7 +71,7 @@ namespace Application.Topics
 
                 var topics = await dbContext.Topics
                     .AsNoTracking()
-                    .Where(x=>x.IsDeleted == false)
+                    .Where(x => x.IsDeleted == false)
                     .ToListAsync(token);
                 return topics.ToTopicResponseDtoList();
             }
@@ -87,7 +88,7 @@ namespace Application.Topics
 
             var topic = await dbContext.Topics.FindAsync([topicId]);
 
-            if(topic == null || topic.IsDeleted )
+            if (topic == null || topic.IsDeleted)
             {
                 throw new TopicNotFoundException(currentTopicId);
             }
@@ -95,9 +96,9 @@ namespace Application.Topics
             topic.Title = topicRequestDto.Title ?? topic.Title;
             topic.Summary = topicRequestDto.Summary ?? topic.Summary;
             topic.TopicType = topicRequestDto.TopicType ?? topic.TopicType;
-            topic.EventStart = topicRequestDto.EventStart;            
+            topic.EventStart = topicRequestDto.EventStart;
             topic.Location = Location.Of(
-                topicRequestDto.Location.City, 
+                topicRequestDto.Location.City,
                 topicRequestDto.Location.City
                 );
 

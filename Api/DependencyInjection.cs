@@ -20,6 +20,8 @@ namespace Api
                     .WithOrigins("http://localhost:3000");
                 });
             });
+            services.AddMediatR(config =>config
+            .RegisterServicesFromAssembly(typeof(GetTopicsHandler).Assembly));
             return services;
         }
 

@@ -7,7 +7,7 @@ namespace Application
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddScoped<ITopicsService, TopicsService>();
+            //services.AddScoped<ITopicsService, TopicsService>();
             return services;
         }
 
