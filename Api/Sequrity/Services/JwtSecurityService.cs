@@ -29,7 +29,7 @@ namespace Api.Sequrity.Services
                 Subject = new ClaimsIdentity(claims),
                 IssuedAt = DateTime.UtcNow,
                 NotBefore = DateTime.UtcNow.AddMinutes(0), 
-                Expires = DateTime.UtcNow.AddMinutes(1)
+                Expires = DateTime.UtcNow.AddMinutes(10)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);

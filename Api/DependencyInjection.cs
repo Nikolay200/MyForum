@@ -40,6 +40,7 @@ namespace Api
             application.UseExceptionHandler(options => { });
             application.UseHttpsRedirection();
 
+            application.UseAuthentication();
             application.UseAuthorization();
 
             application.MapControllers();
