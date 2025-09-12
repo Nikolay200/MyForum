@@ -28,5 +28,16 @@ namespace Domain.Models
                 Location = location 
             };
         }
+
+        public void Update(string title, string summary, string topicType, DateTime eventStart, Location location)
+        {
+            this.Title = title;
+            this.Summary = summary;
+            this.TopicType = topicType;
+            this.EventStart = eventStart;
+            this.Location = Location.Of(
+                location.City,
+                location.Street);
+        }
     }
 }

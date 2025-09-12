@@ -99,7 +99,7 @@ namespace Application.Topics.Old
             topic.EventStart = topicRequestDto.EventStart;
             topic.Location = Location.Of(
                 topicRequestDto.Location.City,
-                topicRequestDto.Location.City
+                topicRequestDto.Location.Street
                 );
 
             await dbContext.SaveChangesAsync(token);
