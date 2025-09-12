@@ -1,9 +1,36 @@
-﻿
+﻿using Domain.Sequrity;
 
 namespace Infrastructure.Data.Extensions
 {
     public static class InitialData
     {
+        public static IEnumerable<CustomIdentityUser> Users => new List<CustomIdentityUser> 
+        {
+        new CustomIdentityUser
+{
+    Id ="20000000-0000-0000-0000-000000000001",
+    UserName = "user1",
+    Email = "User1@example.com",
+    FullName = "Дмитрий Петров",
+    About = "Обожаю готовить и пробовать новые рецепты"
+},
+new CustomIdentityUser
+{
+    Id ="20000000-0000-0000-0000-000000000002",
+    UserName = "user2",
+    Email = "uSer2@example.com",
+    FullName = "Ольга Сидорова",
+    About = "Интересуюсь программированием и искусственным интеллектом"
+},
+new CustomIdentityUser
+{
+    Id ="20000000-0000-0000-0000-000000000003",
+    UserName = "user3",
+    Email = "uSEr3@example.com",
+    FullName = "Иван Смирнов",
+    About = "Занимаюсь спортом и веду активный образ жизни"
+}
+        };
         public static IEnumerable<Topic> Topics =>new List<Topic> 
         {
         Topic.Create(

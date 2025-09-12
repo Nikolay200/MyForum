@@ -1,4 +1,5 @@
 ﻿using Api.Exceptions.Handler;
+using Api.Sequrity.Extensions;
 
 namespace Api
 {
@@ -23,6 +24,7 @@ namespace Api
             services.AddMediatR(config =>config
             .RegisterServicesFromAssembly(typeof(GetTopicsHandler).Assembly));
 
+            services.AddIdentityServices(configuration);
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
             return services;
         }
