@@ -14,7 +14,7 @@ namespace Application.Mapping
                     .ForMember(dest => dest.Location, opt => opt.MapFrom(src => Location.Of(
                         src.Location.City,
                         src.Location.Street)))
-                    .ForMember(dest => dest.Id, opt => opt.MapFrom((src, dest) => dest.Id));
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom((src, dest) => dest.Id)).ReverseMap();
         }
     }
 }
