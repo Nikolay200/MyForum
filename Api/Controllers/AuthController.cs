@@ -1,16 +1,19 @@
 ﻿using Api.Sequrity.Services;
 using Domain.Sequrity;
 using Domain.Sequrity.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class AuthController(UserManager<CustomIdentityUser> userManager, IJwtSecurityService securityService) : ControllerBase
     {
+
         [HttpPost("login")]
         public async Task<IResult> Login(LoginRequest dto)
         {
